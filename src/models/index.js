@@ -1,19 +1,22 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../config/database');
+const sequelize = require('../config/database');  // Asegúrate de que la ruta es correcta
 
-const User = require('./user')(sequelize, Sequelize.DataTypes);
-const Product = require('./product')(sequelize, Sequelize.DataTypes);
+const User = require('./user');
+const Product = require('./product');
 
-// Relaciones
-// Ejemplo: cada usuario puede tener muchos productos
-User.hasMany(Product, { as: 'products' });
+// Establecer relaciones
+User.hasMany(Product, {
+  foreignKey: 'userId',
+  as: 'products'
+});
+
 Product.belongsTo(User, {
   foreignKey: 'userId',
   as: 'user'
 });
 
 module.exports = {
-  sequelize, // La instancia de Sequelize
+  sequelize,  
   User,
   Product
 };
